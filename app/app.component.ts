@@ -1,7 +1,29 @@
 import {Component} from 'angular2/core';
+import {HTTPService} from './httpservice'
 
 @Component({
     selector: 'my-app',
-    template: '<h1>My First Angular 2 App</h1>'
+    templateUrl: 'partials/main.html',
+	providers: [HTTPService]
 })
-export class AppComponent { }
+export class AppComponent { 
+
+	schedules: Object;
+	
+	constructor (private _httpService:HTTPService) {
+		this.getData();	
+	}
+	
+	getData() {
+		this._httpService.getJSONData()
+		.subscribe(
+			data => this.schedules = data,
+			error => console.log(error),
+			() => console.log("Request Complete")
+		);
+	}
+	
+	printData() {
+		console.log(this.schedules);
+	}
+}

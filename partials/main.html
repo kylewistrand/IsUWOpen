@@ -1,0 +1,6 @@
+<button (click)="printData()">Print JSON Object to Console</button>
+<!-- The question mark indicated in Angular API as an Elvis operator will wait for schedules to be non-null before rendering the values below it -->
+<!--<ul>
+<li *ngFor="#item of schedules?.schedules;">{{item | json}}</li>
+</ul>-->
+<h5>{{schedules?.schedules | json}}</h5>
