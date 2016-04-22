@@ -9,16 +9,26 @@
 <div *ngIf="arrayed" style="text-align:center;">
 	<h2>Formatted Data</h2>
 	<table style="margin: 0 auto;">
-	<tr>
-		<th>Name</th>
-		<th>Open</th>
-		<th>Close</th>
-	</tr>
-	<tr *ngFor="#item of schedules?.schedules;">
-		<td>{{item.name}}</td>
-		<td>{{item.times.friday.open}}</td>
-		<td>{{item.times.friday.close}}</td>
-	</tr>
+		<tr>
+			<th>Building</th>
+			<th>Name</th>
+			<th>Open</th>
+			<th>Close</th>
+		</tr>
+	</table>
+	<table *ngFor="#item of schedules?.schedules;" style="margin: 0 auto;">
+		<tr>
+			<td>{{item.name}}</td>
+			<td></td>
+			<td>{{item.times.friday.open}}</td>
+			<td>{{item.times.friday.close}}</td>
+		</tr>
+		<tr *ngFor="#place of item.places;">
+			<td>{{item.name}}</td>
+			<td>{{place.name}}</td>
+			<td>{{place.times.friday.open}}</td>
+			<td>{{place.times.friday.close}}</td>
+		</tr>
 	</table>
 </div>
 <hr/>
