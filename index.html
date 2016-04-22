@@ -6,31 +6,57 @@
 	<title>Is UW Open?</title>
 	<link rel="stylesheet" href="http://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.min.css">
 	<link href='http://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' rel='stylesheet' type='text/css'>
+	
+	<!-- 1. Load libraries -->
+    <!-- IE required polyfills, in this exact order -->
+    <script src="node_modules/es6-shim/es6-shim.min.js"></script>
+    <script src="node_modules/systemjs/dist/system-polyfills.js"></script>
+    <script src="node_modules/angular2/es6/dev/src/testing/shims_for_IE.js"></script>   
 
+    <script src="node_modules/angular2/bundles/angular2-polyfills.js"></script>
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="node_modules/rxjs/bundles/Rx.js"></script>
+    <script src="node_modules/angular2/bundles/angular2.dev.js"></script>
+
+    <!-- 2. Configure SystemJS -->
+    <script>
+      System.config({
+        packages: {        
+          app: {
+            format: 'register',
+            defaultExtension: 'js'
+          }
+        }
+      });
+      System.import('app/main')
+            .then(null, console.error.bind(console));
+    </script>
 </head>
 <body>
+	<div class="top-bar" 
+ 		<div class="top-bar-left"> 
+ 			<ul class="menu"> 
+ 				<li class="menu-text">Is UW Open?</li> 
+ 				<li><a href="#">Rick's</a></li> 
+ 				<li><a href="#">The 8</a></li> 
+ 			</ul> 
+ 		</div> 
+ 	</div> 
+ 
 
-	<div class="top-bar"
-		<div class="top-bar-left">
-			<ul class="menu">
-				<li class="menu-text">Is UW Open?</li>
-				<li><a href="#">Rick's</a></li>
-				<li><a href="#">The 8</a></li>
-			</ul>
-		</div>
-	</div>
+ 	<div class="callout large"> 
+ 		<div class="row column text-center"> 
+ 			<h1>Yes</h1> 
+ 			<p class="lead">The 8 is open right now.</p> 
+ 			<a href="#" class="button large">Learn More</a> 
+ 		</div> 
+ 	</div> 
+ 	<div class="row column"> 
+ 		<span class="secondary label">Copyright 2016 Nathan Wreggit and Kyle Wistrand</span> 
+ 		<span class="secondary label">Code licensed under the <a href="LICENSE">MIT License</a></span> 
+ 	</div> 
 
-	<div class="callout large">
-		<div class="row column text-center">
-			<h1>Yes</h1>
-			<p class="lead">The 8 is open right now.</p>
-			<a href="#" class="button large">Learn More</a>
-		</div>
-	</div>
-	<div class="row column">
-		<span class="secondary label">Copyright 2016 Nathan Wreggit and Kyle Wistrand</span>
-		<span class="secondary label">Code licensed under the <a href="LICENSE">MIT License</a></span>
-	</div>
+	<my-app>Loading...</my-app>
 	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script src="http://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.js"></script>
 	<script>
