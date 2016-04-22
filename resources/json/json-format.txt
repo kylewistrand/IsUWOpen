@@ -1,0 +1,37 @@
+schedules.json:
+schedules
+  Building
+    Times
+      Day of week
+        open
+        close
+      }
+    },
+    Places
+      Place
+        Times
+          Day of week
+            breakfast = 7:30
+            brunch
+            lunch
+            dinner
+            close
+          }
+        },
+        Special dates
+          date
+            breakfast
+            brunch
+            lunch
+            dinner
+            close
+          }
+        }
+      }
+    }
+  }
+}
+
+closures.json:
+closures
+  date
