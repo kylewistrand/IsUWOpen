@@ -1,6 +1,28 @@
-<button (click)="printData()">Print JSON Object to Console</button>
+<br/>
+<div style="text-align:center;">
+<button class="button large" (click)="getOldData()">Get Normal Data</button>
+<button class="button large" (click)="getArrayedData()">Get Arrayed Data</button>
+<button class="button large" (click)="printData()">Print JSON Object to Console</button>
+</div>
 <!-- The question mark indicated in Angular API as an Elvis operator will wait for schedules to be non-null before rendering the values below it -->
-<!--<ul>
-<li *ngFor="#item of schedules?.schedules;">{{item | json}}</li>
-</ul>-->
-<h5>{{schedules?.schedules | json}}</h5>
+
+<div *ngIf="arrayed" style="text-align:center;">
+	<h2>Formatted Data</h2>
+	<table style="margin: 0 auto;">
+	<tr>
+		<th>Name</th>
+		<th>Open</th>
+		<th>Close</th>
+	</tr>
+	<tr *ngFor="#item of schedules?.schedules;">
+		<td>{{item.name}}</td>
+		<td>{{item.times.friday.open}}</td>
+		<td>{{item.times.friday.close}}</td>
+	</tr>
+	</table>
+</div>
+<hr/>
+<div style="text-align:center;">
+	<h2>Raw Data</h2>
+	<h5>{{schedules?.schedules | json}}</h5>
+</div>

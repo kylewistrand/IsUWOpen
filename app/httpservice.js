@@ -30,6 +30,10 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map'], fun
                     return this._http.get('resources/json/schedules.json')
                         .map(function (res) { return res.json(); });
                 };
+                HTTPService.prototype.getFormattedJSONData = function () {
+                    return this._http.get('resources/json/schedulesArrayed.json')
+                        .map(function (res) { return res.json(); });
+                };
                 HTTPService = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [http_1.Http])

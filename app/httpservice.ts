@@ -11,4 +11,10 @@ export class HTTPService {
 			//Extract the HTTP response to a JSON object
 			.map(res => res.json());
 	}
+	
+	getFormattedJSONData() {
+		return this._http.get('resources/json/schedulesArrayed.json')
+			//Extract the HTTP response to a JSON object
+			.map(res => res.json());
+	}
 }

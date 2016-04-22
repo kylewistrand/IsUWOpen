@@ -1,0 +1,53 @@
+{
+	"schedules": [{
+		"name": "McMahon",
+		"times": {
+			"mt": {
+				"open": "8",
+				"close": "12"
+			},
+			"friday": {
+				"open": "8",
+				"close": "20"
+			}
+		},
+		"places": [{
+			"name": "The 8",
+			"times": {
+				"mt": {
+					"breakfast": "8",
+					"close": "12"
+				},
+				"friday": {
+					"breakfast": "8",
+					"close": "20"
+				}
+			},
+			"special": {
+				"1/12": {
+					"breakfast": "10",
+					"close": "18"
+				}
+			}
+		},
+		{
+			"name": "The Nook",
+			"times": {
+				"mt": {
+					"open": "8",
+					"close": "26"
+				},
+				"friday": {
+					"open": "8",
+					"close": "26"
+				}
+			},
+			"special": {
+				"1/12": {
+					"open": "10",
+					"close": "18"
+				}
+			}
+		}]
+	}]
+}

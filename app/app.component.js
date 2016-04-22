@@ -24,12 +24,24 @@ System.register(['angular2/core', './httpservice'], function(exports_1, context_
             AppComponent = (function () {
                 function AppComponent(_httpService) {
                     this._httpService = _httpService;
-                    this.getData();
+                    this.schedules = null;
+                    this.arrayed = false;
                 }
-                AppComponent.prototype.getData = function () {
+                AppComponent.prototype.getOldData = function () {
                     var _this = this;
+                    this.arrayed = false;
+                    this.schedules = null;
                     this._httpService.getJSONData()
                         .subscribe(function (data) { return _this.schedules = data; }, function (error) { return console.log(error); }, function () { return console.log("Request Complete"); });
+                    this.arrayed = false;
+                };
+                AppComponent.prototype.getArrayedData = function () {
+                    var _this = this;
+                    this.arrayed = false;
+                    this.schedules = null;
+                    this._httpService.getFormattedJSONData()
+                        .subscribe(function (data) { return _this.schedules = data; }, function (error) { return console.log(error); }, function () { return console.log("Request Complete"); });
+                    this.arrayed = true;
                 };
                 AppComponent.prototype.printData = function () {
                     console.log(this.schedules);

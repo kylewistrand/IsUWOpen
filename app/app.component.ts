@@ -8,19 +8,37 @@ import {HTTPService} from './httpservice'
 })
 export class AppComponent { 
 
-	schedules: Object;
+	schedules = null;
+	arrayed = false;
 	
-	constructor (private _httpService:HTTPService) {
-		this.getData();	
-	}
+	constructor (private _httpService:HTTPService) {}
 	
-	getData() {
+	getOldData() {
+		this.arrayed = false;
+		this.schedules = null;
+		
 		this._httpService.getJSONData()
 		.subscribe(
 			data => this.schedules = data,
 			error => console.log(error),
 			() => console.log("Request Complete")
 		);
+		
+		this.arrayed = false;
+	}
+	
+	getArrayedData() {
+		this.arrayed = false;
+		this.schedules = null;
+		
+		this._httpService.getFormattedJSONData()
+		.subscribe(
+			data => this.schedules = data,
+			error => console.log(error),
+			() => console.log("Request Complete")
+		);
+		
+		this.arrayed = true;
 	}
 	
 	printData() {
