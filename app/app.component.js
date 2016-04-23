@@ -83,7 +83,7 @@ System.register(['angular2/core', './httpservice'], function(exports_1, context_
                     return true;
                 };
                 AppComponent.prototype.convertToReadableTime = function (time) {
-                    var hours = parseInt(time / 60);
+                    var hours = Math.floor(time / 60);
                     var minutes = time % 60;
                     var ending;
                     if (hours < 12) {

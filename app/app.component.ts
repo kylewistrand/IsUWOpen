@@ -85,7 +85,7 @@ export class AppComponent {
 	}
 	
 	convertToReadableTime(time) {
-		var hours = parseInt(time/60);
+		var hours = Math.floor(time/60);
 		var minutes = time % 60;
 		var ending;
 		if(hours < 12){
