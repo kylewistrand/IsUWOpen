@@ -1,42 +1,46 @@
 <br/>
 <div style="text-align:center;">
-<button class="button large" (click)="getOldData()">Get Normal Data</button>
-<button class="button large" (click)="getArrayedData()">Get Arrayed Data</button>
-<button class="button large" (click)="printData()">Print JSON Object to Console</button>
+<button class="button large hollow warning" (click)="getOldData()">Get Normal Data</button>
+<button class="button large hollow warning" (click)="getArrayedData()">Get Arrayed Data</button>
+<button class="button large hollow warning" (click)="printData()">Print JSON to Console</button>
 </div>
 <!-- The question mark indicated in Angular API as an Elvis operator will wait for schedules to be non-null before rendering the values below it -->
 
-<div *ngIf="arrayed" style="text-align:center;">
-	<h2>Formatted Data</h2>
-	<table *ngFor="#building of schedules?.schedules;" style="margin: 0 auto;">
-		<tr>
-			<th>Building</th>
-			<th>Name</th>
-			<th>Service</th>
-			<th>Open</th>
-			<th>Close</th>
-		</tr>
-		<tr>
-			<td><a href="{{building.map_url}}" target="_blank">{{building.name}}</a></td>
-			<td>---</td>
-			<td>---</td>
-			<td>{{building.times.open}}</td>
-			<td>{{building.times.close}}</td>
-		</tr>
-		<tr *ngFor="#place of building.places;">
-			<td><a href="{{building.map_url}}" target="_blank">{{building.name}}</a></td>
-			<td>{{place.name}}</td>
-			<td *ngIf="isOpen(place)">{{place.times[getCurrentDay(place)].hours[getCurrentHours(place, getCurrentDay(place))].name}}</td>
-			<td *ngIf="isOpen(place)">{{convertToReadableTime(place.times[getCurrentDay(place)].hours[getCurrentHours(place, getCurrentDay(place))].open)}}</td>
-			<td *ngIf="isOpen(place)">{{convertToReadableTime(place.times[getCurrentDay(place)].hours[getCurrentHours(place, getCurrentDay(place))].close)}}</td>
-			<td *ngIf="!isOpen(place)">Closed</td>
-			<td *ngIf="!isOpen(place)">---</td>
-			<td *ngIf="!isOpen(place)">---</td>
-		</tr>
-	</table>
-</div>
-<hr/>
-<div *ngIf="!arrayed" style="text-align:center;">
-	<h2>Raw Data</h2>
-	<h5>{{schedules?.schedules | json}}</h5>
+<div *ngIf="visible">
+
+	<div *ngIf="arrayed" style="text-align:center;">
+		<br/>
+		<h2 style="color: #ECDCA8">Today is: {{date}}</h2>
+		<table *ngFor="#building of schedules?.schedules;" style="margin: 0 auto; border: 2px solid black; width: 60%">
+			<tr>
+				<th>Building</th>
+				<th>Name</th>
+				<th>Service</th>
+				<th>Open</th>
+				<th>Close</th>
+			</tr>
+			<tr>
+				<td><a href="{{building.map_url}}" target="_blank">{{building.name}}</a></td>
+				<td>---</td>
+				<td>---</td>
+				<td>{{building.times.open}}</td>
+				<td>{{building.times.close}}</td>
+			</tr>
+			<tr *ngFor="#place of building.places;">
+				<td [ngClass]="{'closed': !isOpen(place)}"><a href="{{building.map_url}}" target="_blank">{{building.name}}</a></td>
+				<td [ngClass]="{'closed': !isOpen(place)}">{{place.name}}</td>
+				<td *ngIf="isOpen(place)">{{place.times[getCurrentDay(place)].hours[getCurrentHours(place, getCurrentDay(place))].name}}</td>
+				<td *ngIf="isOpen(place)">{{convertToReadableTime(place.times[getCurrentDay(place)].hours[getCurrentHours(place, getCurrentDay(place))].open)}}</td>
+				<td *ngIf="isOpen(place)">{{convertToReadableTime(place.times[getCurrentDay(place)].hours[getCurrentHours(place, getCurrentDay(place))].close)}}</td>
+				<td *ngIf="!isOpen(place)" class="closed">Closed</td>
+				<td *ngIf="!isOpen(place)" class="closed">---</td>
+				<td *ngIf="!isOpen(place)" class="closed">---</td>
+			</tr>
+		</table>
+	</div>
+
+	<div *ngIf="!arrayed" style="text-align:center;">
+		<h2>Raw Data</h2>
+		<h5>{{schedules?.schedules | json}}</h5>
+	</div>
 </div>

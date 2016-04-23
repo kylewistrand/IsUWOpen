@@ -11,8 +11,14 @@ h2, h3 {
 }
 body { 
   margin: 2em; 
+  background-color: #3F366A;
 }
 body, input[text], button { 
   color: #888; 
   font-family: Cambria, Georgia; 
+}
+
+.closed {
+	background: rgba(255, 43, 47, 0.3); 
+	opacity:0.4;
 }

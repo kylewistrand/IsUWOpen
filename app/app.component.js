@@ -26,25 +26,31 @@ System.register(['angular2/core', './httpservice'], function(exports_1, context_
                     this._httpService = _httpService;
                     this.schedules = null;
                     this.arrayed = false;
+                    this.visible = false;
                     this.d = new Date();
                     this.day = this.d.getDay();
                     this.hour = (this.d.getHours() * 60) + this.d.getMinutes();
+                    this.date = this.d.toDateString();
                 }
                 AppComponent.prototype.getOldData = function () {
                     var _this = this;
+                    this.visible = false;
                     this.arrayed = false;
                     this.schedules = null;
                     this._httpService.getJSONData()
                         .subscribe(function (data) { return _this.schedules = data; }, function (error) { return console.log(error); }, function () { return console.log("Request Complete"); });
                     this.arrayed = false;
+                    this.visible = true;
                 };
                 AppComponent.prototype.getArrayedData = function () {
                     var _this = this;
+                    this.visible = false;
                     this.arrayed = false;
                     this.schedules = null;
                     this._httpService.getFormattedJSONData()
                         .subscribe(function (data) { return _this.schedules = data; }, function (error) { return console.log(error); }, function () { return console.log("Request Complete"); });
                     this.arrayed = true;
+                    this.visible = true;
                 };
                 AppComponent.prototype.printData = function () {
                     console.log(this.schedules);
@@ -66,7 +72,8 @@ System.register(['angular2/core', './httpservice'], function(exports_1, context_
                     //console.log(day);
                     //console.log(this.hour);
                     for (var i = 0; i < place.times[day].hours.length; i++) {
-                        if (this.hour >= place.times[day].hours[i].open && this.hour < place.times[day].hours[i].close) {
+                        if (this.hour >= place.times[day].hours[i].open && this.hour < place.times[day].hours[i].close ||
+                            place.times[day].hours[i].open > place.times[day].hours[i].close && (this.hour >= place.times[day].hours[i].open || this.hour < place.times[day].hours[i].close)) {
                             //console.log("Finished Hour Calc");
                             //console.log(i);
                             return i;

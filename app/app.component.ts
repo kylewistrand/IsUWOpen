@@ -10,13 +10,17 @@ export class AppComponent {
 
 	schedules = null;
 	arrayed = false;
+	visible = false;
 	d = new Date();
 	day = this.d.getDay();
 	hour = (this.d.getHours() * 60) + this.d.getMinutes();
+	date = this.d.toDateString();
+	
 	
 	constructor (private _httpService:HTTPService) {}
 	
 	getOldData() {
+		this.visible = false;
 		this.arrayed = false;
 		this.schedules = null;
 		
@@ -28,9 +32,11 @@ export class AppComponent {
 		);
 		
 		this.arrayed = false;
+		this.visible = true;
 	}
 	
 	getArrayedData() {
+		this.visible = false;
 		this.arrayed = false;
 		this.schedules = null;
 		
@@ -42,6 +48,7 @@ export class AppComponent {
 		);
 		
 		this.arrayed = true;
+		this.visible = true;
 	}
 	
 	printData() {
@@ -66,7 +73,8 @@ export class AppComponent {
 		//console.log(day);
 		//console.log(this.hour);
 		for(var i = 0; i < place.times[day].hours.length; i++) {
-			if(this.hour >= place.times[day].hours[i].open && this.hour < place.times[day].hours[i].close) {
+			if(this.hour >= place.times[day].hours[i].open && this.hour < place.times[day].hours[i].close || 
+			   place.times[day].hours[i].open > place.times[day].hours[i].close && (this.hour >= place.times[day].hours[i].open || this.hour < place.times[day].hours[i].close)) {
 				//console.log("Finished Hour Calc");
 				//console.log(i);
 				return i;
@@ -108,6 +116,7 @@ export class AppComponent {
 		} else {
 			return hours.toString() + ":0" + minutes.toString() + " " + ending;
 		}
-		
 	}
+	
+		
 }

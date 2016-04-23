@@ -119,11 +119,6 @@
 				"hours": [{
 					"name": "Normal",
 					"open": 480,
-					"close": 1439
-				},
-				{
-					"name": "Normal",
-					"open": 0,
 					"close": 60
 				}]
 			},
@@ -132,11 +127,6 @@
 				"hours": [{
 					"name": "Normal",
 					"open": 540,
-					"close": 1439
-				},
-				{
-					"name": "Normal",
-					"open": 0,
 					"close": 60
 				}]
 			}],
