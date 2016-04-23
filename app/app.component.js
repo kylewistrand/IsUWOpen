@@ -31,6 +31,8 @@ System.register(['angular2/core', './httpservice'], function(exports_1, context_
                     this.day = this.d.getDay();
                     this.hour = (this.d.getHours() * 60) + this.d.getMinutes();
                     this.date = this.d.toDateString();
+                    this.debug = null;
+                    //this.pollTime();
                 }
                 AppComponent.prototype.getOldData = function () {
                     var _this = this;
@@ -93,19 +95,21 @@ System.register(['angular2/core', './httpservice'], function(exports_1, context_
                     var hours = Math.floor(time / 60);
                     var minutes = time % 60;
                     var ending;
+                    console.log(hours);
+                    console.log("Minutes:" + minutes);
                     if (hours < 12) {
                         ending = "AM";
                     }
-                    else if (hours == 12) {
+                    else if (hours >= 12) {
+                        ending = "PM";
+                        hours = hours - 12;
+                    }
+                    if (hours == 12) {
                         ending = "PM";
                     }
                     else if (hours == 0) {
                         hours = hours + 12;
                         ending = "AM";
-                    }
-                    else {
-                        ending = "PM";
-                        hours = hours - 12;
                     }
                     //console.log(hours);
                     //console.log(minutes);
@@ -116,6 +120,33 @@ System.register(['angular2/core', './httpservice'], function(exports_1, context_
                     else {
                         return hours.toString() + ":0" + minutes.toString() + " " + ending;
                     }
+                };
+                AppComponent.prototype.pollTime = function () {
+                    setInterval(function () {
+                        this.day = this.d.getDay();
+                        this.hour = (this.d.getHours() * 60) + this.d.getMinutes();
+                        this.date = this.d.toDateString();
+                    }, 60000);
+                    // Update the time every one minute
+                };
+                AppComponent.prototype.debugTime = function () {
+                    var _this = this;
+                    this.debug = setInterval(function () { return _this.timeTick(); }, 50);
+                };
+                AppComponent.prototype.timeTick = function (arg1, arg2, arg3) {
+                    //console.log(this.d);
+                    // Add 1 minute to the time every quarter second
+                    this.d.setTime(this.d.getTime() + 60000);
+                    this.day = this.d.getDay();
+                    this.hour = (this.d.getHours() * 60) + this.d.getMinutes();
+                };
+                AppComponent.prototype.resetTime = function () {
+                    clearInterval(this.debug);
+                    this.debug = null;
+                    this.d = new Date();
+                    this.day = this.d.getDay();
+                    this.hour = (this.d.getHours() * 60) + this.d.getMinutes();
+                    this.date = this.d.toDateString();
                 };
                 AppComponent = __decorate([
                     core_1.Component({

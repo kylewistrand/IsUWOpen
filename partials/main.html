@@ -3,6 +3,8 @@
 <button class="button large hollow warning" (click)="getOldData()">Get Normal Data</button>
 <button class="button large hollow warning" (click)="getArrayedData()">Get Arrayed Data</button>
 <button class="button large hollow warning" (click)="printData()">Print JSON to Console</button>
+<button *ngIf="debug == null" class="button large hollow warning" (click)="debugTime()">Speed Up Time</button>
+<button *ngIf="debug != null" class="button large hollow warning" (click)="resetTime()">Reset Time</button>
 </div>
 <!-- The question mark indicated in Angular API as an Elvis operator will wait for schedules to be non-null before rendering the values below it -->
 
@@ -10,7 +12,7 @@
 
 	<div *ngIf="arrayed" style="text-align:center;">
 		<br/>
-		<h2 style="color: #ECDCA8">Today is: {{date}}</h2>
+		<h2 style="color: #ECDCA8">Today is: {{date}}  {{convertToReadableTime(hour)}}</h2>
 		<table *ngFor="#building of schedules?.schedules;" style="margin: 0 auto; border: 2px solid black; width: 60%">
 			<tr>
 				<th>Building</th>
