@@ -26,6 +26,9 @@ System.register(['angular2/core', './httpservice'], function(exports_1, context_
                     this._httpService = _httpService;
                     this.schedules = null;
                     this.arrayed = false;
+                    this.d = new Date();
+                    this.day = this.d.getDay();
+                    this.hour = (this.d.getHours() * 60) + this.d.getMinutes();
                 }
                 AppComponent.prototype.getOldData = function () {
                     var _this = this;
@@ -45,6 +48,67 @@ System.register(['angular2/core', './httpservice'], function(exports_1, context_
                 };
                 AppComponent.prototype.printData = function () {
                     console.log(this.schedules);
+                };
+                AppComponent.prototype.getCurrentDay = function (place) {
+                    //console.log(place);
+                    for (var i = 0; i < place.times.length; i++) {
+                        for (var j = 0; j < place.times[i].days.length; j++) {
+                            if (this.day == place.times[i].days[j]) {
+                                //console.log(i);
+                                return i;
+                            }
+                        }
+                    }
+                };
+                AppComponent.prototype.getCurrentHours = function (place, day) {
+                    //console.log("Starting Hour Calc");
+                    //console.log(place);
+                    //console.log(day);
+                    //console.log(this.hour);
+                    for (var i = 0; i < place.times[day].hours.length; i++) {
+                        if (this.hour >= place.times[day].hours[i].open && this.hour < place.times[day].hours[i].close) {
+                            //console.log("Finished Hour Calc");
+                            //console.log(i);
+                            return i;
+                        }
+                    }
+                };
+                AppComponent.prototype.isOpen = function (place) {
+                    if (this.getCurrentDay(place) == null) {
+                        return false;
+                    }
+                    if (this.getCurrentHours(place, this.getCurrentDay(place)) == null) {
+                        return false;
+                    }
+                    return true;
+                };
+                AppComponent.prototype.convertToReadableTime = function (time) {
+                    var hours = parseInt(time / 60);
+                    var minutes = time % 60;
+                    var ending;
+                    if (hours < 12) {
+                        ending = "AM";
+                    }
+                    else if (hours == 12) {
+                        ending = "PM";
+                    }
+                    else if (hours == 0) {
+                        hours = hours + 12;
+                        ending = "AM";
+                    }
+                    else {
+                        ending = "PM";
+                        hours = hours - 12;
+                    }
+                    //console.log(hours);
+                    //console.log(minutes);
+                    //console.log(ending);
+                    if (minutes >= 10) {
+                        return hours.toString() + ":" + minutes.toString() + " " + ending;
+                    }
+                    else {
+                        return hours.toString() + ":0" + minutes.toString() + " " + ending;
+                    }
                 };
                 AppComponent = __decorate([
                     core_1.Component({

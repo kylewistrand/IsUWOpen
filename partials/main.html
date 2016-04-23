@@ -8,31 +8,35 @@
 
 <div *ngIf="arrayed" style="text-align:center;">
 	<h2>Formatted Data</h2>
-	<table style="margin: 0 auto;">
+	<table *ngFor="#building of schedules?.schedules;" style="margin: 0 auto;">
 		<tr>
 			<th>Building</th>
 			<th>Name</th>
+			<th>Service</th>
 			<th>Open</th>
 			<th>Close</th>
 		</tr>
-	</table>
-	<table *ngFor="#item of schedules?.schedules;" style="margin: 0 auto;">
 		<tr>
-			<td>{{item.name}}</td>
-			<td></td>
-			<td>{{item.times.friday.open}}</td>
-			<td>{{item.times.friday.close}}</td>
+			<td><a href="{{building.map_url}}" target="_blank">{{building.name}}</a></td>
+			<td>---</td>
+			<td>---</td>
+			<td>{{building.times.open}}</td>
+			<td>{{building.times.close}}</td>
 		</tr>
-		<tr *ngFor="#place of item.places;">
-			<td>{{item.name}}</td>
+		<tr *ngFor="#place of building.places;">
+			<td><a href="{{building.map_url}}" target="_blank">{{building.name}}</a></td>
 			<td>{{place.name}}</td>
-			<td>{{place.times.friday.open}}</td>
-			<td>{{place.times.friday.close}}</td>
+			<td *ngIf="isOpen(place)">{{place.times[getCurrentDay(place)].hours[getCurrentHours(place, getCurrentDay(place))].name}}</td>
+			<td *ngIf="isOpen(place)">{{convertToReadableTime(place.times[getCurrentDay(place)].hours[getCurrentHours(place, getCurrentDay(place))].open)}}</td>
+			<td *ngIf="isOpen(place)">{{convertToReadableTime(place.times[getCurrentDay(place)].hours[getCurrentHours(place, getCurrentDay(place))].close)}}</td>
+			<td *ngIf="!isOpen(place)">Closed</td>
+			<td *ngIf="!isOpen(place)">---</td>
+			<td *ngIf="!isOpen(place)">---</td>
 		</tr>
 	</table>
 </div>
 <hr/>
-<div style="text-align:center;">
+<div *ngIf="!arrayed" style="text-align:center;">
 	<h2>Raw Data</h2>
 	<h5>{{schedules?.schedules | json}}</h5>
 </div>
