@@ -133,7 +133,7 @@ System.register(['angular2/core', './httpservice'], function(exports_1, context_
                     var _this = this;
                     this.debug = setInterval(function () { return _this.timeTick(); }, 50);
                 };
-                AppComponent.prototype.timeTick = function (arg1, arg2, arg3) {
+                AppComponent.prototype.timeTick = function () {
                     //console.log(this.d);
                     // Add 1 minute to the time every quarter second
                     this.d.setTime(this.d.getTime() + 60000);

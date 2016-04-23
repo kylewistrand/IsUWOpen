@@ -142,7 +142,7 @@ export class AppComponent {
 		this.debug = setInterval(() => this.timeTick(), 50);
 	}
 	
-	timeTick(arg1, arg2, arg3){ 
+	timeTick(){ 
 			
 		//console.log(this.d);
 		
