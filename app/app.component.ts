@@ -17,10 +17,11 @@ export class AppComponent {
 	date = this.d.toDateString();
 	
 	debug = null;
+	tick = null;
 	
 	
 	constructor (private _httpService:HTTPService) {
-		//this.pollTime();
+		this.pollTime();
 	}
 	
 	getOldData() {
@@ -100,8 +101,8 @@ export class AppComponent {
 		var hours = Math.floor(time/60);
 		var minutes = time % 60;
 		var ending;
-		console.log(hours);
-		console.log("Minutes:" + minutes);
+		//console.log(hours);
+		//console.log("Minutes:" + minutes);
 		if(hours < 12){
 			ending = "AM";
 		} else if (hours >= 12) {
@@ -127,26 +128,20 @@ export class AppComponent {
 	}
 	
 	pollTime() {
-		setInterval(function(){ 
-		
-		this.day = this.d.getDay();
-		this.hour = (this.d.getHours() * 60) + this.d.getMinutes();
-		this.date = this.d.toDateString(); 
-		 
-		}, 60000);
-		
-		// Update the time every one minute
+		// Update the time every 5 seconds
+		this.tick = setInterval(() => this.timeTick(), 60000);
 	}
 	
 	debugTime() {
+		//Stop polling time
+		clearInterval(this.tick);
+		this.tick = null;
+		
+		// Increment time by 1 minute ever 50 ms
 		this.debug = setInterval(() => this.timeTick(), 50);
 	}
 	
 	timeTick(){ 
-			
-		//console.log(this.d);
-		
-		// Add 1 minute to the time every quarter second
 		this.d.setTime(this.d.getTime() + 60000);
 		this.day = this.d.getDay();
 		this.hour = (this.d.getHours() * 60) + this.d.getMinutes();
@@ -159,6 +154,7 @@ export class AppComponent {
 		this.day = this.d.getDay();
 		this.hour = (this.d.getHours() * 60) + this.d.getMinutes();
 		this.date = this.d.toDateString();
+		this.pollTime();
 	}
 	
 	
