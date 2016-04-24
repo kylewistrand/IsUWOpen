@@ -139,6 +139,7 @@ System.register(['angular2/core', './httpservice'], function(exports_1, context_
                     this.d.setTime(this.d.getTime() + 60000);
                     this.day = this.d.getDay();
                     this.hour = (this.d.getHours() * 60) + this.d.getMinutes();
+                    this.date = this.d.toDateString();
                 };
                 AppComponent.prototype.resetTime = function () {
                     clearInterval(this.debug);

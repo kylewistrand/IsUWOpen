@@ -2,12 +2,30 @@
 	"schedules": [{
 		"name": "McMahon",
 		"map_url": "http://uw.edu/maps/?mcm",
-		"times": {
-			"open": "7:00 AM",
-			"close": "8:00 PM"
+		"times": [{
+			"days": [1, 2, 3, 4, 5],
+			"hours": [{
+				"name": "Normal",
+				"open": 450,
+				"close": 600
+			}]
+		},
+		{
+			"days": [6, 0],
+			"hours": [{
+				"name": "Normal",
+				"open": 510,
+				"close": 840
+			}]
+		}],
+		"special": {
+			"1/12": {
+				"breakfast": "10",
+				"close": "18"
+			}
 		},
 		"places": [{
-			"name": "The 8",
+			"name": "Abundo",
 			"times": [{
 				"days": [1, 2, 3, 4, 5],
 				"hours": [{
@@ -30,12 +48,54 @@
 				"days": [6, 0],
 				"hours": [{
 					"name": "Brunch",
-					"open": 480,
+					"open": 510,
+					"close": 840
+				}]
+			}],
+			"special": {
+				"1/12": {
+					"breakfast": "10",
+					"close": "18"
+				}
+			}
+		},
+		{
+			"name": "Broiler Zone",
+			"times": [{
+				"days": [1, 2, 3, 4, 5],
+				"hours": [{
+					"name": "Lunch",
+					"open": 660,
 					"close": 840
 				},
 				{
 					"name": "Dinner",
 					"open": 960,
+					"close": 1200
+				}]
+			},
+			{
+				"days": [0, 6],
+				"hours": [{
+					"name": "Dinner",
+					"open": 960,
+					"close": 1200
+				}]
+			}],
+			"special": {
+				"1/12": {
+					"breakfast": "10",
+					"close": "18"
+				}
+			}
+		},
+		{
+			"name": "Wild Greens Cafe",
+			"times": [{
+				"days": [0, 1, 2, 3, 4, 5, 6],
+				"hours": [{
+					"name": "Normal",
+					"open": 660,
 					"close": 1200
 				}]
 			}],

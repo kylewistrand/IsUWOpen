@@ -22,3 +22,21 @@ body, input[text], button {
 	background: rgba(255, 43, 47, 0.3); 
 	opacity:0.4;
 }
+
+.warning {
+	background: rgba(255, 43, 47, 0.5); 
+}
+
+.mainTable {
+	margin: 0 auto; 
+	border: 2px solid black; 
+	width: 60%
+}
+
+.gold {
+	color: #ECDCA8;
+}
+
+.centerText {
+	text-align: center;
+}

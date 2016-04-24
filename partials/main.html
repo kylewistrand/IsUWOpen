@@ -10,10 +10,10 @@
 
 <div *ngIf="visible">
 
-	<div *ngIf="arrayed" style="text-align:center;">
+	<div *ngIf="arrayed" class="centerText">
 		<br/>
-		<h2 style="color: #ECDCA8">Today is: {{date}}  {{convertToReadableTime(hour)}}</h2>
-		<table *ngFor="#building of schedules?.schedules;" style="margin: 0 auto; border: 2px solid black; width: 60%">
+		<h2 class="gold">Today is: {{date}}  {{convertToReadableTime(hour)}}</h2>
+		<table *ngFor="#building of schedules?.schedules;" class="mainTable">
 			<tr>
 				<th>Building</th>
 				<th>Name</th>
@@ -24,9 +24,12 @@
 			<tr>
 				<td><a href="{{building.map_url}}" target="_blank">{{building.name}}</a></td>
 				<td>---</td>
-				<td>---</td>
-				<td>{{building.times.open}}</td>
-				<td>{{building.times.close}}</td>
+				<td *ngIf="isOpen(building)">{{building.times[getCurrentDay(building)].hours[getCurrentHours(building, getCurrentDay(building))].name}}</td>
+				<td *ngIf="isOpen(building)">{{convertToReadableTime(building.times[getCurrentDay(building)].hours[getCurrentHours(building, getCurrentDay(building))].open)}}</td>
+				<td *ngIf="isOpen(building)">{{convertToReadableTime(building.times[getCurrentDay(building)].hours[getCurrentHours(building, getCurrentDay(building))].close)}}</td>
+				<td *ngIf="!isOpen(building)" class="warning">Card Accessible</td>
+				<td *ngIf="!isOpen(building)">---</td>
+				<td *ngIf="!isOpen(building)">---</td>
 			</tr>
 			<tr *ngFor="#place of building.places;">
 				<td [ngClass]="{'closed': !isOpen(place)}"><a href="{{building.map_url}}" target="_blank">{{building.name}}</a></td>
@@ -41,8 +44,8 @@
 		</table>
 	</div>
 
-	<div *ngIf="!arrayed" style="text-align:center;">
-		<h2>Raw Data</h2>
-		<h5>{{schedules?.schedules | json}}</h5>
+	<div *ngIf="!arrayed" class="centerText">
+		<h2 class="gold">Raw Data</h2>
+		<h5 class="gold">{{schedules?.schedules | json}}</h5>
 	</div>
 </div>

@@ -145,6 +145,7 @@ export class AppComponent {
 		this.d.setTime(this.d.getTime() + 60000);
 		this.day = this.d.getDay();
 		this.hour = (this.d.getHours() * 60) + this.d.getMinutes();
+		this.date = this.d.toDateString();
 	}
 	
 	resetTime(){
