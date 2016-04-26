@@ -6,16 +6,24 @@
 			"days": [1, 2, 3, 4, 5],
 			"hours": [{
 				"name": "Normal",
-				"open": 450,
-				"close": 600
+				"open": 480,
+				"close": 1140
 			}]
 		},
 		{
-			"days": [6, 0],
+			"days": [0],
 			"hours": [{
 				"name": "Normal",
-				"open": 510,
-				"close": 840
+				"open": 600,
+				"close": 1020
+			}]
+		},
+		{
+			"days": [6],
+			"hours": [{
+				"name": "Normal",
+				"open": 480,
+				"close": 1020
 			}]
 		}],
 		"special": {
