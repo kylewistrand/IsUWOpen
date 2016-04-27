@@ -19,6 +19,8 @@ export class AppComponent {
 	debug = null;
 	tick = null;
 	
+	tickTest = null;
+	
 	
 	constructor (private _httpService:HTTPService) {
 		this.pollTime();
