@@ -33,6 +33,7 @@ System.register(['angular2/core', './httpservice'], function(exports_1, context_
                     this.date = this.d.toDateString();
                     this.debug = null;
                     this.tick = null;
+                    this.tickTest = null;
                     this.pollTime();
                 }
                 AppComponent.prototype.getOldData = function () {
