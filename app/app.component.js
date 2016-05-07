@@ -33,7 +33,6 @@ System.register(['angular2/core', './httpservice'], function(exports_1, context_
                     this.date = this.d.toDateString();
                     this.debug = null;
                     this.tick = null;
-                    this.tickTest = null;
                     this.pollTime();
                 }
                 AppComponent.prototype.getOldData = function () {
@@ -60,28 +59,30 @@ System.register(['angular2/core', './httpservice'], function(exports_1, context_
                     console.log(this.schedules);
                 };
                 AppComponent.prototype.getCurrentDay = function (place) {
-                    //console.log(place);
                     for (var i = 0; i < place.times.length; i++) {
-                        for (var j = 0; j < place.times[i].days.length; j++) {
-                            if (this.day == place.times[i].days[j]) {
-                                //console.log(i);
-                                return i;
-                            }
+                        if (this.day >= place.times[i].openDay && this.day <= place.times[i].closeDay) {
+                            return i;
                         }
                     }
                 };
                 AppComponent.prototype.getCurrentHours = function (place, day) {
-                    //console.log("Starting Hour Calc");
-                    //console.log(place);
-                    //console.log(day);
-                    //console.log(this.hour);
                     for (var i = 0; i < place.times[day].hours.length; i++) {
-                        if (this.hour >= place.times[day].hours[i].open && this.hour < place.times[day].hours[i].close ||
-                            place.times[day].hours[i].open > place.times[day].hours[i].close && (this.hour >= place.times[day].hours[i].open || this.hour < place.times[day].hours[i].close)) {
-                            //console.log("Finished Hour Calc");
-                            //console.log(i);
+                        if (this.hour >= place.times[day].hours[i].open && this.hour < place.times[day].hours[i].close) {
                             return i;
                         }
+                        else if (place.times[day].hours[i].open > place.times[day].hours[i].close && (this.hour >= place.times[day].hours[i].open || this.hour < place.times[day].hours[i].close)) {
+                            return i;
+                        }
+                    }
+                };
+                AppComponent.prototype.generateHours = function (place, open) {
+                    var dayIndex = this.getCurrentDay(place);
+                    var hoursIndex = this.getCurrentHours(place, dayIndex);
+                    if (open == true) {
+                        return this.convertToReadableTime(place.times[dayIndex].hours[hoursIndex].open);
+                    }
+                    else if (open == false) {
+                        return this.convertToReadableTime(place.times[dayIndex].hours[hoursIndex].close);
                     }
                 };
                 AppComponent.prototype.isOpen = function (place) {
@@ -97,8 +98,6 @@ System.register(['angular2/core', './httpservice'], function(exports_1, context_
                     var hours = Math.floor(time / 60);
                     var minutes = time % 60;
                     var ending;
-                    //console.log(hours);
-                    //console.log("Minutes:" + minutes);
                     if (hours < 12) {
                         ending = "AM";
                     }
@@ -113,9 +112,6 @@ System.register(['angular2/core', './httpservice'], function(exports_1, context_
                         hours = hours + 12;
                         ending = "AM";
                     }
-                    //console.log(hours);
-                    //console.log(minutes);
-                    //console.log(ending);
                     if (minutes >= 10) {
                         return hours.toString() + ":" + minutes.toString() + " " + ending;
                     }
@@ -125,7 +121,7 @@ System.register(['angular2/core', './httpservice'], function(exports_1, context_
                 };
                 AppComponent.prototype.pollTime = function () {
                     var _this = this;
-                    // Update the time every 5 seconds
+                    // Update the time every 60 seconds
                     this.tick = setInterval(function () { return _this.timeTick(); }, 60000);
                 };
                 AppComponent.prototype.debugTime = function () {
@@ -133,8 +129,8 @@ System.register(['angular2/core', './httpservice'], function(exports_1, context_
                     //Stop polling time
                     clearInterval(this.tick);
                     this.tick = null;
-                    // Increment time by 1 minute ever 50 ms
-                    this.debug = setInterval(function () { return _this.timeTick(); }, 50);
+                    // Increment time by 1 minute every 25 ms
+                    this.debug = setInterval(function () { return _this.timeTick(); }, 25);
                 };
                 AppComponent.prototype.timeTick = function () {
                     this.d.setTime(this.d.getTime() + 60000);

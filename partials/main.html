@@ -13,35 +13,60 @@
 	<div *ngIf="arrayed" class="centerText">
 		<br/>
 		<h2 class="gold">Today is: {{date}}  {{convertToReadableTime(hour)}}</h2>
-		<table *ngFor="#building of schedules?.schedules;" class="mainTable">
-			<tr>
-				<th>Building</th>
-				<th>Name</th>
-				<th>Service</th>
-				<th>Open</th>
-				<th>Close</th>
-			</tr>
-			<tr>
-				<td><a href="{{building.map_url}}" target="_blank">{{building.name}}</a></td>
-				<td>---</td>
-				<td *ngIf="isOpen(building)">{{building.times[getCurrentDay(building)].hours[getCurrentHours(building, getCurrentDay(building))].name}}</td>
-				<td *ngIf="isOpen(building)">{{convertToReadableTime(building.times[getCurrentDay(building)].hours[getCurrentHours(building, getCurrentDay(building))].open)}}</td>
-				<td *ngIf="isOpen(building)">{{convertToReadableTime(building.times[getCurrentDay(building)].hours[getCurrentHours(building, getCurrentDay(building))].close)}}</td>
-				<td *ngIf="!isOpen(building)" class="warning">Card Accessible</td>
-				<td *ngIf="!isOpen(building)">---</td>
-				<td *ngIf="!isOpen(building)">---</td>
-			</tr>
-			<tr *ngFor="#place of building.places;">
-				<td [ngClass]="{'closed': !isOpen(place)}"><a href="{{building.map_url}}" target="_blank">{{building.name}}</a></td>
-				<td [ngClass]="{'closed': !isOpen(place)}">{{place.name}}</td>
-				<td *ngIf="isOpen(place)">{{place.times[getCurrentDay(place)].hours[getCurrentHours(place, getCurrentDay(place))].name}}</td>
-				<td *ngIf="isOpen(place)">{{convertToReadableTime(place.times[getCurrentDay(place)].hours[getCurrentHours(place, getCurrentDay(place))].open)}}</td>
-				<td *ngIf="isOpen(place)">{{convertToReadableTime(place.times[getCurrentDay(place)].hours[getCurrentHours(place, getCurrentDay(place))].close)}}</td>
-				<td *ngIf="!isOpen(place)" class="closed">Closed</td>
-				<td *ngIf="!isOpen(place)" class="closed">---</td>
-				<td *ngIf="!isOpen(place)" class="closed">---</td>
-			</tr>
-		</table>
+		
+		<div class="small-12" *ngFor="#building of schedules?.schedules;">
+			<div class="row openHeader" *ngIf="isOpen(building)">
+				<div class="small-3 columns">
+					<h1><a href="{{building.map_url}}" target="_blank">{{building.name}}</a></h1>
+				</div>
+				<div class="small-3 columns">
+					<div><h2 class="gold">{{generateHours(building, true)}}</h2></div>
+				</div>
+				<div class="small-3 columns">
+					<div>
+						<h2 class="gold">{{generateHours(building, false)}}</h2>
+					</div>
+				</div>
+				<div class="small-3 columns">
+					<div><h2 class="gold">Open</h2></div>
+				</div>
+			</div>
+			<div class="row closedHeader" *ngIf="!isOpen(building)">
+				<div class="small-3 columns">
+					<h1><a href="{{building.map_url}}" target="_blank">{{building.name}}</a></h1>
+				</div>
+				<div class="small-6 columns">
+					<div><h2 class="gold">Card Accesible</h2></div>
+				</div>
+				<div class="small-3 columns">
+					<div>
+						<h2 class="gold">Closed</h2>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<table class="mainTable">
+					<tr>
+						<th>Name</th>
+						<th>Service</th>
+						<th>Open</th>
+						<th>Close</th>
+					</tr>
+					<tr *ngFor="#place of building.places;">
+						<td [ngClass]="{'closed': !isOpen(place)}">{{place.name}}</td>
+						
+						<td *ngIf="isOpen(place)">{{place.times[getCurrentDay(place)].hours[getCurrentHours(place, getCurrentDay(place))].name}}</td>
+						<td *ngIf="isOpen(place)">{{generateHours(place, true)}}</td>
+						<td *ngIf="isOpen(place)">{{generateHours(place, false)}}</td>
+						
+						<td *ngIf="!isOpen(place)" class="closed">Closed</td>
+						<td *ngIf="!isOpen(place)" class="closed">---</td>
+						<td *ngIf="!isOpen(place)" class="closed">---</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		
 	</div>
 
 	<div *ngIf="!arrayed" class="centerText">

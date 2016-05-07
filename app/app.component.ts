@@ -17,10 +17,7 @@ export class AppComponent {
 	date = this.d.toDateString();
 	
 	debug = null;
-	tick = null;
-	
-	tickTest = null;
-	
+	tick = null;	
 	
 	constructor (private _httpService:HTTPService) {
 		this.pollTime();
@@ -63,29 +60,34 @@ export class AppComponent {
 	}
 	
 	getCurrentDay(place) {
-		//console.log(place);
 		for(var i = 0; i < place.times.length; i++) {
-			for(var j = 0; j < place.times[i].days.length; j++) {
-				if(this.day == place.times[i].days[j]) {
-					//console.log(i);
-					return i;
-				}
+			if(this.day >= place.times[i].openDay && this.day <= place.times[i].closeDay) {
+				return i;
 			}
 		}
 	}
 	
 	getCurrentHours(place, day) {
-		//console.log("Starting Hour Calc");
-		//console.log(place);
-		//console.log(day);
-		//console.log(this.hour);
 		for(var i = 0; i < place.times[day].hours.length; i++) {
-			if(this.hour >= place.times[day].hours[i].open && this.hour < place.times[day].hours[i].close || 
-			   place.times[day].hours[i].open > place.times[day].hours[i].close && (this.hour >= place.times[day].hours[i].open || this.hour < place.times[day].hours[i].close)) {
-				//console.log("Finished Hour Calc");
-				//console.log(i);
+			
+			if (this.hour >= place.times[day].hours[i].open && this.hour < place.times[day].hours[i].close) {
+				return i;
+			} else if (place.times[day].hours[i].open > place.times[day].hours[i].close && (this.hour >= place.times[day].hours[i].open || this.hour < place.times[day].hours[i].close)) {
 				return i;
 			}
+			
+		}
+	}
+	
+	generateHours(place, open) {
+			
+		var dayIndex = this.getCurrentDay(place);
+		var hoursIndex = this.getCurrentHours(place, dayIndex);
+		
+		if(open == true){
+			return this.convertToReadableTime(place.times[dayIndex].hours[hoursIndex].open);
+		} else if (open == false) {
+			return this.convertToReadableTime(place.times[dayIndex].hours[hoursIndex].close);
 		}
 	}
 	
@@ -103,8 +105,7 @@ export class AppComponent {
 		var hours = Math.floor(time/60);
 		var minutes = time % 60;
 		var ending;
-		//console.log(hours);
-		//console.log("Minutes:" + minutes);
+
 		if(hours < 12){
 			ending = "AM";
 		} else if (hours >= 12) {
@@ -118,9 +119,6 @@ export class AppComponent {
 			hours = hours + 12;
 			ending = "AM";
 		}
-		//console.log(hours);
-		//console.log(minutes);
-		//console.log(ending);
 		
 		if(minutes >= 10){
 			return hours.toString() + ":" + minutes.toString() + " " + ending;
@@ -130,7 +128,7 @@ export class AppComponent {
 	}
 	
 	pollTime() {
-		// Update the time every 5 seconds
+		// Update the time every 60 seconds
 		this.tick = setInterval(() => this.timeTick(), 60000);
 	}
 	
@@ -139,8 +137,8 @@ export class AppComponent {
 		clearInterval(this.tick);
 		this.tick = null;
 		
-		// Increment time by 1 minute ever 50 ms
-		this.debug = setInterval(() => this.timeTick(), 50);
+		// Increment time by 1 minute every 25 ms
+		this.debug = setInterval(() => this.timeTick(), 25);
 	}
 	
 	timeTick(){ 
