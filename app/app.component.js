@@ -1,4 +1,4 @@
-System.register(['angular2/core', './httpservice'], function(exports_1, context_1) {
+System.register(['angular2/core', './httpservice', './timeservice'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', './httpservice'], function(exports_1, context_
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, httpservice_1;
+    var core_1, httpservice_1, timeservice_1;
     var AppComponent;
     return {
         setters:[
@@ -19,11 +19,15 @@ System.register(['angular2/core', './httpservice'], function(exports_1, context_
             },
             function (httpservice_1_1) {
                 httpservice_1 = httpservice_1_1;
+            },
+            function (timeservice_1_1) {
+                timeservice_1 = timeservice_1_1;
             }],
         execute: function() {
             AppComponent = (function () {
-                function AppComponent(_httpService) {
+                function AppComponent(_httpService, _timeService) {
                     this._httpService = _httpService;
+                    this._timeService = _timeService;
                     this.schedules = null;
                     this.arrayed = false;
                     this.visible = false;
@@ -31,9 +35,9 @@ System.register(['angular2/core', './httpservice'], function(exports_1, context_
                     this.day = this.d.getDay();
                     this.hour = (this.d.getHours() * 60) + this.d.getMinutes();
                     this.date = this.d.toDateString();
-                    this.debug = null;
                     this.tick = null;
-                    this.pollTime();
+                    this.polling = false;
+                    this.toggleTick();
                 }
                 AppComponent.prototype.getOldData = function () {
                     var _this = this;
@@ -79,58 +83,42 @@ System.register(['angular2/core', './httpservice'], function(exports_1, context_
                     var dayIndex = this.getCurrentDay(place);
                     var hoursIndex = this.getCurrentHours(place, dayIndex);
                     if (open == true) {
-                        return this.convertToReadableTime(place.times[dayIndex].hours[hoursIndex].open);
+                        return this._timeService.convertToReadableTime(place.times[dayIndex].hours[hoursIndex].open);
                     }
                     else if (open == false) {
-                        return this.convertToReadableTime(place.times[dayIndex].hours[hoursIndex].close);
+                        return this._timeService.convertToReadableTime(place.times[dayIndex].hours[hoursIndex].close);
                     }
                 };
                 AppComponent.prototype.isOpen = function (place) {
-                    if (this.getCurrentDay(place) == null) {
+                    var dayIndex = this.getCurrentDay(place);
+                    if (dayIndex == null) {
                         return false;
                     }
-                    if (this.getCurrentHours(place, this.getCurrentDay(place)) == null) {
+                    var hoursIndex = this.getCurrentHours(place, dayIndex);
+                    if (hoursIndex == null) {
                         return false;
                     }
                     return true;
                 };
                 AppComponent.prototype.convertToReadableTime = function (time) {
-                    var hours = Math.floor(time / 60);
-                    var minutes = time % 60;
-                    var ending;
-                    if (hours < 12) {
-                        ending = "AM";
-                    }
-                    else if (hours >= 12) {
-                        ending = "PM";
-                        hours = hours - 12;
-                    }
-                    if (hours == 12) {
-                        ending = "PM";
-                    }
-                    else if (hours == 0) {
-                        hours = hours + 12;
-                        ending = "AM";
-                    }
-                    if (minutes >= 10) {
-                        return hours.toString() + ":" + minutes.toString() + " " + ending;
+                    return this._timeService.convertToReadableTime(time);
+                };
+                AppComponent.prototype.toggleTick = function () {
+                    var _this = this;
+                    if (!this.polling) {
+                        clearInterval(this.tick);
+                        this.tick = null;
+                        this.resetTime();
+                        this.tick = setInterval(function () { return _this.timeTick(); }, 60000);
+                        this.polling = true;
                     }
                     else {
-                        return hours.toString() + ":0" + minutes.toString() + " " + ending;
+                        clearInterval(this.tick);
+                        this.tick = null;
+                        this.resetTime();
+                        this.tick = setInterval(function () { return _this.timeTick(); }, 25);
+                        this.polling = false;
                     }
-                };
-                AppComponent.prototype.pollTime = function () {
-                    var _this = this;
-                    // Update the time every 60 seconds
-                    this.tick = setInterval(function () { return _this.timeTick(); }, 60000);
-                };
-                AppComponent.prototype.debugTime = function () {
-                    var _this = this;
-                    //Stop polling time
-                    clearInterval(this.tick);
-                    this.tick = null;
-                    // Increment time by 1 minute every 25 ms
-                    this.debug = setInterval(function () { return _this.timeTick(); }, 25);
                 };
                 AppComponent.prototype.timeTick = function () {
                     this.d.setTime(this.d.getTime() + 60000);
@@ -139,21 +127,18 @@ System.register(['angular2/core', './httpservice'], function(exports_1, context_
                     this.date = this.d.toDateString();
                 };
                 AppComponent.prototype.resetTime = function () {
-                    clearInterval(this.debug);
-                    this.debug = null;
                     this.d = new Date();
                     this.day = this.d.getDay();
                     this.hour = (this.d.getHours() * 60) + this.d.getMinutes();
                     this.date = this.d.toDateString();
-                    this.pollTime();
                 };
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'my-app',
                         templateUrl: 'partials/main.html',
-                        providers: [httpservice_1.HTTPService]
+                        providers: [httpservice_1.HTTPService, timeservice_1.TimeService]
                     }), 
-                    __metadata('design:paramtypes', [httpservice_1.HTTPService])
+                    __metadata('design:paramtypes', [httpservice_1.HTTPService, timeservice_1.TimeService])
                 ], AppComponent);
                 return AppComponent;
             }());

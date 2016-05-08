@@ -1,26 +1,28 @@
 import {Component} from 'angular2/core';
-import {HTTPService} from './httpservice'
+import {HTTPService} from './httpservice';
+import {TimeService} from './timeservice';
 
 @Component({
     selector: 'my-app',
     templateUrl: 'partials/main.html',
-	providers: [HTTPService]
+	providers: [HTTPService, TimeService]
 })
 export class AppComponent { 
 
 	schedules = null;
 	arrayed = false;
 	visible = false;
+	
 	d = new Date();
 	day = this.d.getDay();
 	hour = (this.d.getHours() * 60) + this.d.getMinutes();
 	date = this.d.toDateString();
 	
-	debug = null;
-	tick = null;	
+	tick = null;
+	polling = false;
 	
-	constructor (private _httpService:HTTPService) {
-		this.pollTime();
+	constructor (private _httpService:HTTPService, private _timeService:TimeService) {
+		this.toggleTick();
 	}
 	
 	getOldData() {
@@ -85,60 +87,45 @@ export class AppComponent {
 		var hoursIndex = this.getCurrentHours(place, dayIndex);
 		
 		if(open == true){
-			return this.convertToReadableTime(place.times[dayIndex].hours[hoursIndex].open);
+			return this._timeService.convertToReadableTime(place.times[dayIndex].hours[hoursIndex].open);
 		} else if (open == false) {
-			return this.convertToReadableTime(place.times[dayIndex].hours[hoursIndex].close);
+			return this._timeService.convertToReadableTime(place.times[dayIndex].hours[hoursIndex].close);
 		}
 	}
 	
 	isOpen(place) {
-		if(this.getCurrentDay(place) == null){
+		
+		var dayIndex = this.getCurrentDay(place);
+		if(dayIndex == null){
 			return false;
 		}
-		if(this.getCurrentHours(place, this.getCurrentDay(place)) == null){
+		
+		var hoursIndex = this.getCurrentHours(place, dayIndex);
+		if(hoursIndex == null){
 			return false;
 		}
+				
 		return true;
 	}
 	
 	convertToReadableTime(time) {
-		var hours = Math.floor(time/60);
-		var minutes = time % 60;
-		var ending;
-
-		if(hours < 12){
-			ending = "AM";
-		} else if (hours >= 12) {
-			ending = "PM";
-			hours = hours - 12;
-		}
-		
-		if (hours == 12) {
-			ending = "PM";
-		} else if (hours == 0) {
-			hours = hours + 12;
-			ending = "AM";
-		}
-		
-		if(minutes >= 10){
-			return hours.toString() + ":" + minutes.toString() + " " + ending;
+		return this._timeService.convertToReadableTime(time);
+	}
+	
+	toggleTick() {
+		if(!this.polling) {
+			clearInterval(this.tick);
+			this.tick = null;
+			this.resetTime();
+			this.tick = setInterval(() => this.timeTick(), 60000);
+			this.polling = true;
 		} else {
-			return hours.toString() + ":0" + minutes.toString() + " " + ending;
+			clearInterval(this.tick);
+			this.tick = null;
+			this.resetTime();
+			this.tick = setInterval(() => this.timeTick(), 25);
+			this.polling = false;
 		}
-	}
-	
-	pollTime() {
-		// Update the time every 60 seconds
-		this.tick = setInterval(() => this.timeTick(), 60000);
-	}
-	
-	debugTime() {
-		//Stop polling time
-		clearInterval(this.tick);
-		this.tick = null;
-		
-		// Increment time by 1 minute every 25 ms
-		this.debug = setInterval(() => this.timeTick(), 25);
 	}
 	
 	timeTick(){ 
@@ -149,16 +136,10 @@ export class AppComponent {
 	}
 	
 	resetTime(){
-		clearInterval(this.debug);
-		this.debug = null;
 		this.d = new Date();
 		this.day = this.d.getDay();
 		this.hour = (this.d.getHours() * 60) + this.d.getMinutes();
 		this.date = this.d.toDateString();
-		this.pollTime();
 	}
-	
-	
-	
 		
 }

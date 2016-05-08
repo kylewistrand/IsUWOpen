@@ -3,8 +3,8 @@
 <button class="button large hollow warning" (click)="getOldData()">Get Normal Data</button>
 <button class="button large hollow warning" (click)="getArrayedData()">Get Arrayed Data</button>
 <button class="button large hollow warning" (click)="printData()">Print JSON to Console</button>
-<button *ngIf="debug == null" class="button large hollow warning" (click)="debugTime()">Speed Up Time</button>
-<button *ngIf="debug != null" class="button large hollow warning" (click)="resetTime()">Reset Time</button>
+<button *ngIf="polling == true" class="button large hollow warning" (click)="toggleTick()">Speed Up Time</button>
+<button *ngIf="polling == false" class="button large hollow warning" (click)="toggleTick()">Reset Time</button>
 </div>
 <!-- The question mark indicated in Angular API as an Elvis operator will wait for schedules to be non-null before rendering the values below it -->
 
