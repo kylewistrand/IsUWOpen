@@ -23,6 +23,7 @@ export class AppComponent {
 	
 	constructor (private _httpService:HTTPService, private _timeService:TimeService) {
 		this.toggleTick();
+		console.log(this.hour);
 	}
 	
 	getOldData() {
@@ -63,7 +64,9 @@ export class AppComponent {
 	
 	getCurrentDay(place) {
 		for(var i = 0; i < place.times.length; i++) {
-			if(this.day >= place.times[i].openDay && this.day <= place.times[i].closeDay) {
+			if(this.day >= place.times[i].openDay && this.day <= place.times[i].closeDay
+			   || (place.times[i].openDay > place.times[i].closeDay && (this.day == place.times[i].openDay 
+			   || this.day == place.times[i].closeDay))) {
 				return i;
 			}
 		}

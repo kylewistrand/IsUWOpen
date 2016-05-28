@@ -10,7 +10,7 @@ export class TimeService {
 
 		if(hours < 12){
 			ending = "AM";
-		} else if (hours >= 12) {
+		} else if (hours > 12) {
 			ending = "PM";
 			hours = hours - 12;
 		}

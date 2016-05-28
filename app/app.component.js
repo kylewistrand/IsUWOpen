@@ -38,6 +38,7 @@ System.register(['angular2/core', './httpservice', './timeservice'], function(ex
                     this.tick = null;
                     this.polling = false;
                     this.toggleTick();
+                    console.log(this.hour);
                 }
                 AppComponent.prototype.getOldData = function () {
                     var _this = this;
@@ -64,7 +65,9 @@ System.register(['angular2/core', './httpservice', './timeservice'], function(ex
                 };
                 AppComponent.prototype.getCurrentDay = function (place) {
                     for (var i = 0; i < place.times.length; i++) {
-                        if (this.day >= place.times[i].openDay && this.day <= place.times[i].closeDay) {
+                        if (this.day >= place.times[i].openDay && this.day <= place.times[i].closeDay
+                            || (place.times[i].openDay > place.times[i].closeDay && (this.day == place.times[i].openDay
+                                || this.day == place.times[i].closeDay))) {
                             return i;
                         }
                     }

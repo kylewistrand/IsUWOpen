@@ -28,7 +28,7 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                     if (hours < 12) {
                         ending = "AM";
                     }
-                    else if (hours >= 12) {
+                    else if (hours > 12) {
                         ending = "PM";
                         hours = hours - 12;
                     }
